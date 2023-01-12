@@ -37,11 +37,17 @@ $("#add").click(function() {
   
     });
 });
-$("#btnEditar").click(function () {
+$('ul li a').click(function(e){
+    var caller = e.target || e.srcElement;
     console.log(caller);
-    var text = $("#editar");
-    $(caller.parentElement).text(text);
+    $("#btnEditar").click(function () {
+        
+        var text = $("#editar");
+        $(caller.parentElement).text(text);
+    });
 });
+
+
 
 
 
