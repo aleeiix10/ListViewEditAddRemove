@@ -27,29 +27,42 @@ function onDeviceReady() {
     console.log('Running cordova-' + cordova.platformId + '@' + cordova.version);
     document.getElementById('deviceready').classList.add('ready');
 }
-$("#add").click(function() {
-    let pro = prompt("How do u want to say to new element?");
-    $("ul").append("<li><a href='#page1'>"+pro+"<button class='botonNuevo'>Delete</button></a></li>");
+
+let botonAdd = $("#afegir").click(function() {
+    let pro = prompt("Escribe el nombre de la tarea que quieres añadir:");
+    var elem = $("ul").append("<li><a href='#page1'>"+pro+"<button class='botonNuevo' style='border:0px;background-color:black;color:white;float:right'>Delete</button></a></li>");
+    $("a", elem).click(editar);
     $("ul").listview( "refresh" );
     $('ul li button').click(function(e){
-        var caller = e.target || e.srcElement;
-        $(caller.parentElement).remove();
-  
-    });
-});
-$('ul li a').click(function(e){
-    var caller = e.target || e.srcElement;
-    console.log(caller);
-    $("#btnEditar").click(function () {
-        
-        var text = $("#editar");
-        $(caller.parentElement).text(text);
+        var tar = e.target || e.srcElement;
+        $(tar.parentElement.parentElement).remove();
+        return false;
     });
 });
 
+var targetElem = null;
+function editar(e){
+    var tar = e.target || e.srcElement;
+    targetElem = tar;
+    
+    var text = $(targetElem)
+    .clone()    //clone the element
+    .children() //select all the children
+    .remove()   //remove all the children
+    .end()  //again go back to selected element
+    .text();
+    $("#editName").val(text);
 
+}
 
-
-
-
-
+$("[id='btnEditar']").click(function (){
+    var editTaskList = $("#editName").val();
+    botoStr = "<button class='botonNuevo' style='border:0px;background-color:black;color:white;float:right'>Delete</button>";
+    $(targetElem).html(editTaskList+botoStr);
+    document.location= "/#";
+    $('ul li button').click(function(e){
+        var tar = e.target || e.srcElement;
+        $(tar.parentElement.parentElement).remove();
+        return false;
+    });
+});
